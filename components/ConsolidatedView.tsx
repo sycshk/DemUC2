@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Filter, Download } from 'lucide-react';
-import { PNL_DATA } from '../constants';
+import { PNL_DATA, FX_RATES } from '../constants';
 
-const ConsolidatedView: React.FC = () => {
+interface ConsolidatedViewProps {
+  currency: string;
+}
+
+const ConsolidatedView: React.FC<ConsolidatedViewProps> = ({ currency }) => {
   const [expandedRows, setExpandedRows] = useState<string[]>(['1', '3', '5', '7']); // IDs of expanded rows
 
   const toggleRow = (id: string) => {
@@ -12,7 +16,17 @@ const ConsolidatedView: React.FC = () => {
   };
 
   const formatNumber = (num: number) => {
-    return new Intl.NumberFormat('en-US').format(num);
+    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(num);
+  };
+
+  const getConvertedValue = (hkdValue: number, marketKey: keyof typeof FX_RATES) => {
+    if (currency === 'HKD') return hkdValue;
+    // Local = HKD / Rate
+    return hkdValue / FX_RATES[marketKey];
+  };
+
+  const getHeaderLabel = (base: string, code: string) => {
+    return currency === 'HKD' ? base : `${base} (${code})`;
   };
 
   return (
@@ -25,7 +39,7 @@ const ConsolidatedView: React.FC = () => {
             <span>Filter</span>
           </button>
           <div className="h-6 w-px bg-gray-300 mx-2"></div>
-          <span className="text-sm text-gray-500">Showing: <span className="font-semibold text-swire-navy">All Markets</span></span>
+          <span className="text-sm text-gray-500">Showing: <span className="font-semibold text-swire-navy">All Markets ({currency})</span></span>
         </div>
         <button className="flex items-center space-x-1 px-3 py-1.5 bg-swire-navy text-white rounded text-sm hover:bg-blue-900 shadow-sm">
           <Download size={14} />
@@ -42,20 +56,20 @@ const ConsolidatedView: React.FC = () => {
                 P&L Line Items
               </th>
               <th className="p-3 text-right border-b border-r w-32 font-bold text-swire-navy bg-blue-50">
-                Group Total
+                Group Total (HKD)
               </th>
               {/* Region Hierarchy visual - Simplified for MVP */}
               <th className="p-3 text-right border-b border-r w-32 font-semibold">
-                Mainland China
+                {getHeaderLabel('Mainland China', 'RMB')}
               </th>
               <th className="p-3 text-right border-b border-r w-32 font-semibold">
-                USA
+                {getHeaderLabel('USA', 'USD')}
               </th>
               <th className="p-3 text-right border-b border-r w-32 font-semibold">
-                Hong Kong
+                {getHeaderLabel('Hong Kong', 'HKD')}
               </th>
               <th className="p-3 text-right border-b border-r w-32 font-semibold">
-                Taiwan
+                 {getHeaderLabel('Taiwan', 'TWD')}
               </th>
             </tr>
           </thead>
@@ -81,20 +95,21 @@ const ConsolidatedView: React.FC = () => {
                 </td>
 
                 {/* Data Columns */}
+                {/* Group Total is always HKD (Reporting Currency) - Can change logic if Group Total should be N/A in local view */}
                 <td className={`p-2 text-right border-r tabular-nums ${row.isTotal ? 'bg-blue-50/50 text-swire-navy font-bold' : 'text-gray-800'}`}>
                   {formatNumber(row.values.group)}
                 </td>
                 <td className="p-2 text-right border-r tabular-nums text-gray-600">
-                  {formatNumber(row.values.china)}
+                  {formatNumber(getConvertedValue(row.values.china, 'china'))}
                 </td>
                 <td className="p-2 text-right border-r tabular-nums text-gray-600">
-                  {formatNumber(row.values.usa)}
+                  {formatNumber(getConvertedValue(row.values.usa, 'usa'))}
                 </td>
                 <td className="p-2 text-right border-r tabular-nums text-gray-600">
-                  {formatNumber(row.values.hk)}
+                  {formatNumber(getConvertedValue(row.values.hk, 'hk'))}
                 </td>
                 <td className="p-2 text-right border-r tabular-nums text-gray-600">
-                  {formatNumber(row.values.taiwan)}
+                  {formatNumber(getConvertedValue(row.values.taiwan, 'taiwan'))}
                 </td>
               </tr>
             ))}

@@ -26,9 +26,9 @@ const Dashboard: React.FC = () => {
       {/* Main Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[450px]">
         {/* Waterfall Chart - The Bridge */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+        <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col h-full">
           <h3 className="text-lg font-semibold text-swire-navy mb-4">Profit Bridge (LY Actual to Budget)</h3>
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full min-h-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={WATERFALL_DATA} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
@@ -76,9 +76,9 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Trend Chart */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+        <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-sm border border-gray-200 flex flex-col h-full">
           <h3 className="text-lg font-semibold text-swire-navy mb-4">Monthly Profit Trend</h3>
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full min-h-0">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={TREND_DATA} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                 <CartesianGrid stroke="#f5f5f5" vertical={false} />

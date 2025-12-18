@@ -41,6 +41,25 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #999; 
       }
+      /* Prose custom styling */
+      .custom-markdown h1, .custom-markdown h2, .custom-markdown h3 {
+        color: #003366;
+        font-weight: 600;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+      }
+      .custom-markdown p {
+        margin-bottom: 0.75em;
+      }
+      .custom-markdown ul {
+        list-style-type: disc;
+        padding-left: 1.5em;
+        margin-bottom: 0.75em;
+      }
+      .custom-markdown strong {
+        font-weight: 600;
+        color: #1f2937;
+      }
     </style>
   <script type="importmap">
 {
@@ -49,7 +68,9 @@
     "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
     "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
-    "recharts": "https://esm.sh/recharts@^3.6.0"
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "@google/genai": "https://esm.sh/@google/genai@^0.2.1",
+    "react-markdown": "https://esm.sh/react-markdown@9"
   }
 }
 </script>

@@ -1,4 +1,4 @@
-export type ViewState = 'dashboard' | 'ingestion' | 'adjustments' | 'consolidation' | 'reports' | 'settings';
+export type ViewState = 'dashboard' | 'ingestion' | 'adjustments' | 'consolidation' | 'variance' | 'reports' | 'settings';
 
 export interface KPIMetric {
   id: string;

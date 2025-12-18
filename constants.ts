@@ -10,6 +10,16 @@ export const COLORS = {
   GREEN: '#10B981', // For positive variance
 };
 
+// FX Rates (Base: HKD)
+// Logic: Local * Rate = HKD
+// Therefore: HKD / Rate = Local
+export const FX_RATES = {
+  china: 1.08,   // 1 RMB = 1.08 HKD
+  usa: 7.82,     // 1 USD = 7.82 HKD
+  hk: 1.00,      // 1 HKD = 1.00 HKD
+  taiwan: 0.25,  // 1 TWD = 0.25 HKD
+};
+
 // Mock KPI Data
 export const KPI_DATA: KPIMetric[] = [
   { id: '1', label: 'Total Revenue', value: '$4,285m', variance: 5.2, trend: 'up' },
@@ -55,4 +65,22 @@ export const PNL_DATA: PnLRow[] = [
   { id: '5', label: 'Gross Profit', level: 1, isTotal: true, values: { group: 1600000, china: 750000, usa: 570000, hk: 170000, taiwan: 110000 } },
   { id: '6', label: 'Operating Expenses', level: 1, values: { group: -800000, china: -350000, usa: -300000, hk: -80000, taiwan: -70000 } },
   { id: '7', label: 'EBITDA', level: 1, isTotal: true, values: { group: 800000, china: 400000, usa: 270000, hk: 90000, taiwan: 40000 } },
+];
+
+export const COMPARISON_DATA = [
+  { metric: 'Volume (Unit Cases)', actual: 89.2, budget: 88.5, forecast: 90.1, unit: 'm' },
+  { metric: 'Gross Revenue', actual: 4285, budget: 4150, forecast: 4300, unit: '$m' },
+  { metric: 'Net Operating Revenue', actual: 4000, budget: 3850, forecast: 4050, unit: '$m' },
+  { metric: 'Cost of Goods Sold', actual: -2400, budget: -2350, forecast: -2420, unit: '$m' },
+  { metric: 'Gross Profit', actual: 1600, budget: 1500, forecast: 1630, unit: '$m' },
+  { metric: 'Operating Expenses', actual: -800, budget: -750, forecast: -780, unit: '$m' },
+  { metric: 'EBITDA', actual: 1105, budget: 1050, forecast: 1120, unit: '$m' },
+  { metric: 'Attributable Profit', actual: 842, budget: 800, forecast: 850, unit: '$m' },
+];
+
+export const MACRO_DATA = [
+  { indicator: 'China GDP Growth', value: '+5.2%', impact: 'Positive', description: 'Higher than expected recovery boosting consumption in mainland markets.' },
+  { indicator: 'Global Sugar Price', value: '+12.5%', impact: 'Negative', description: 'Supply constraints in Brazil increasing raw material costs.' },
+  { indicator: 'USD/CNY', value: '7.24', impact: 'Neutral', description: 'Stable within hedging band, minimal FX impact this quarter.' },
+  { indicator: 'Aluminum Index', value: '-3.2%', impact: 'Positive', description: 'Lower packaging costs for cans contributing to better margins.' },
 ];

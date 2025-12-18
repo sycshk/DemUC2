@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Upload, FileJson, Table2, FileBarChart, Settings, Bell, Search, UserCircle, ChevronDown, Menu } from 'lucide-react';
+import { LayoutDashboard, Upload, FileJson, Table2, FileBarChart, Settings, Bell, Search, UserCircle, ChevronDown, Menu, TrendingUp } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import DataIngestion from './components/DataIngestion';
 import ConsolidatedView from './components/ConsolidatedView';
+import VarianceAnalysis from './components/VarianceAnalysis';
 import { ViewState } from './types';
+import { FX_RATES } from './constants';
 
 // Sidebar Item Component
 const NavItem: React.FC<{ 
@@ -35,11 +37,64 @@ const App: React.FC = () => {
     switch (currentView) {
       case 'dashboard': return <Dashboard />;
       case 'ingestion': return <DataIngestion />;
-      case 'consolidation': return <ConsolidatedView />;
+      case 'adjustments': return (
+        <div className="flex flex-col items-center justify-center h-full text-gray-400">
+          <FileJson size={48} className="mb-4 text-gray-300" />
+          <p className="text-lg">Adjustments Module Under Development</p>
+        </div>
+      );
+      case 'consolidation': return <ConsolidatedView currency={currency} />;
+      case 'variance': return <VarianceAnalysis />;
+      case 'settings': return (
+        <div className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="mb-6 pb-6 border-b border-gray-100">
+             <div className="flex items-center space-x-4 mb-2">
+                <Settings size={28} className="text-swire-navy" />
+                <h2 className="text-2xl font-semibold text-swire-navy">System Settings</h2>
+             </div>
+             <p className="text-gray-500">Manage global configurations, user permissions, and FX tables.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-lg font-medium text-gray-800 mb-4">Foreign Exchange Rates</h3>
+              <div className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Currency Pair</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Rate (to HKD)</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                     <tr>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">RMB / HKD</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">{FX_RATES.china.toFixed(4)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-400">May 20, 2024</td>
+                     </tr>
+                     <tr>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">USD / HKD</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">{FX_RATES.usa.toFixed(4)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-400">May 20, 2024</td>
+                     </tr>
+                     <tr>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TWD / HKD</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-500">{FX_RATES.taiwan.toFixed(4)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-400">May 20, 2024</td>
+                     </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-2 text-xs text-gray-400 italic">* Rates are pulled from Corporate Treasury automatically every 24h.</p>
+            </div>
+          </div>
+        </div>
+      );
       default: return (
         <div className="flex flex-col items-center justify-center h-full text-gray-400">
-          <Settings size={48} className="mb-4 text-gray-300" />
-          <p className="text-lg">Module Under Development</p>
+          <FileBarChart size={48} className="mb-4 text-gray-300" />
+          <p className="text-lg">Reports Module Under Development</p>
         </div>
       );
     }
@@ -59,6 +114,7 @@ const App: React.FC = () => {
           <NavItem icon={Upload} label="Data Ingestion" isActive={currentView === 'ingestion'} onClick={() => setCurrentView('ingestion')} />
           <NavItem icon={FileJson} label="Adjustments" isActive={currentView === 'adjustments'} onClick={() => setCurrentView('adjustments')} />
           <NavItem icon={Table2} label="Consolidated View" isActive={currentView === 'consolidation'} onClick={() => setCurrentView('consolidation')} />
+          <NavItem icon={TrendingUp} label="Variance & AI" isActive={currentView === 'variance'} onClick={() => setCurrentView('variance')} />
           <NavItem icon={FileBarChart} label="Reports" isActive={currentView === 'reports'} onClick={() => setCurrentView('reports')} />
           <NavItem icon={Settings} label="Settings" isActive={currentView === 'settings'} onClick={() => setCurrentView('settings')} />
         </div>
@@ -86,7 +142,9 @@ const App: React.FC = () => {
             <h1 className="text-xl font-semibold text-swire-navy">
               {currentView === 'dashboard' ? 'Financial Performance' : 
                currentView === 'ingestion' ? 'Data Ingestion Portal' :
-               currentView === 'consolidation' ? 'Consolidated P&L' : 'Module'}
+               currentView === 'consolidation' ? 'Consolidated P&L' : 
+               currentView === 'variance' ? 'Variance Analysis & AI Insights' :
+               currentView === 'settings' ? 'System Configuration' : 'Module'}
             </h1>
             
             {/* Global Context Controls */}
