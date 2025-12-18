@@ -1,0 +1,5 @@
+{
+  "name": "SCC Financial Consolidation Portal",
+  "description": "A high-trust financial consolidation tool for Swire Coca-Cola to automate budget ingestion, adjustments, and reporting.",
+  "requestFramePermissions": []
+}
